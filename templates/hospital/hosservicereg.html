@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% include 'hospital/header.html' %}
+<script src="{% static 'admin/jquery.min.js' %}"></script>
+
+<head>
+
+    <title>Hospital Registration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="{% static 'guest/images/icons/favicon.ico'%}"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/bootstrap/css/bootstrap.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/fonts/Linearicons-Free-v1.0.0/icon-font.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/animate/animate.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/css-hamburgers/hamburgers.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/animsition/css/animsition.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/select2/select2.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/daterangepicker/daterangepicker.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/css/util.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/css/main.css'%}">
+    <!--===============================================================================================-->
+</head>
+<body>
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <div class="login100-form-title" style="background-image: url({% static 'hospital/images/img1.jpg'%});">
+					<span class="login100-form-title-1">
+						Hospital Service Registration
+					</span>
+            </div>
+
+
+
+                <div class="">
+                  <table class="table table-striped">
+                      <thead>
+                    <tr>
+                        <th>Service Name</th>
+                        <th>Service Time</th>
+                         <th>Action</th>
+                    </tr>
+                    </thead>
+                   <tbody>
+
+                   {% for entry in services_with_flag %}
+        <tr>
+            <td>{{ entry.service.sername }}</td>
+            <td>{{ entry.service.serTime }}</td>
+            <td>
+
+                {% if entry.associated %}
+                    <button class="btn btn-primary" style="cursor:not-allowed;" disabled>
+                        Add Service
+                    </button>
+                {% else %}
+                    <button class="btn btn-primary">
+                        <a href="{% url 'addhosservice' id=entry.service.serid %}" style="color:white;">Add Service</a>
+                    </button>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+                      </tbody>
+ </table>
+                </div>
+
+
+        </div>
+    </div>
+</div>
+</body>
+
+
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/jquery/jquery-3.2.1.min.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/animsition/js/animsition.min.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/bootstrap/js/popper.js'%}"></script>
+<script src="{% static 'guest/vendor/bootstrap/js/bootstrap.min.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/select2/select2.min.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/daterangepicker/moment.min.js'%}"></script>
+<script src="{% static 'guest/vendor/daterangepicker/daterangepicker.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/countdowntime/countdowntime.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/js/main.js'%}"></script>
+
+</body>
+</html>

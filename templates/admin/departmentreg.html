@@ -1,0 +1,55 @@
+{% load static %}
+{% include 'admin/header.html' %}
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="row">
+                    <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                        <h3 class="font-weight-bold">Welcome Alby</h3>
+                        <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span
+                                class="text-primary">3 unread alerts!</span></h6>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+        <div class="container">
+       <h2 class="mb-5">Department Registration</h2>
+                        <form method="POST" action="{% url 'departmentreg' %}" enctype="multipart/form-data" class="form">
+    {% csrf_token %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="depname">Department Name</label>
+                <input type="text" id="depname" name="depname" class="form-control" required pattern="^[A-Z][a-zA-Z]*$">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="depphoto">Department Photo</label>
+        <input type="file" id="depphoto" name="depphoto" class="form-control-file" required>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+</p>
+
+                 </div>
+            </div>
+        </div>
+
+                    </div>
+                </div>
+
+
+    {% include 'admin/footer.html' %}
+
+<!-- content-wrapper ends -->
+<!-- partial:partials/_footer.html -->

@@ -1,0 +1,98 @@
+{% load static %}
+{% include 'hospital/header.html' %}
+<title>Hospital Registration</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="{% static 'guest/images/icons/favicon.ico'%}"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/bootstrap/css/bootstrap.min.css'%}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/fonts/Linearicons-Free-v1.0.0/icon-font.min.css'%}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/animate/animate.css'%}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/css-hamburgers/hamburgers.min.css'%}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/animsition/css/animsition.min.css'%}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/select2/select2.min.css'%}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/daterangepicker/daterangepicker.css'%}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/css/util.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/css/main.css'%}">
+<!--===============================================================================================-->
+</head>
+
+
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<div class="login100-form-title" style="background-image: url({% static 'hospital/images/img1.jpg'%});">
+					<span class="login100-form-title-1">
+						Complaint View
+					</span>
+				</div>
+				  <p class="font-weight-500">  <table class="table custom-table" required>
+                <thead>
+                <tr>
+                    <th scope="col">Sl No</th>
+					<th scope="col">Patient Name</th>
+					<th scope="col">Op No</th>
+					<th scope="col">Complaint Details</th>
+                    <th scope="col">Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for com in complaint %}
+                <tr scope="row">
+                    <td>{{ forloop.counter }}</td>
+					<td>{{ com.patid.patname }}</td>
+					<td>{{ com.patid.opno }}</td>
+                    <td>{{ com.compdetails }}</td>
+
+					<td><a href="{% url 'deletecomplaint' id=com.compid %}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">
+                       Delete</button>
+                    </a></td>
+
+
+                    </a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table></p>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+<!-- content-wrapper ends -->
+<!-- partial:partials/_footer.html -->
+{% include 'admin/footer.html' %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

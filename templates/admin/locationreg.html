@@ -1,0 +1,98 @@
+{% load static %}
+{% include 'admin/header.html' %}
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="row">
+                    <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                        <h3 class="font-weight-bold">Welcome Alby</h3>
+                        <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span
+                                class="text-primary">3 unread alerts!</span></h6>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+        <div class="container">
+       <h2 class="mb-5">Location Registration</h2>
+
+                        <form method="POST" action="{% url 'locationreg' %}" class="form">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="district">District</label>
+        <select id="district" name="disname" class="form-control" required>
+            <option value="" disabled selected>---Choose District---</option>
+            {% for dict in district %}
+            <option value="{{ dict.disid }}">{{ dict.disname }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="location">Location Name</label>
+        <input type="text" id="location" name="locname" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+</p>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+<!-- content-wrapper ends -->
+<!-- partial:partials/_footer.html -->
+{% include 'admin/footer.html' %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end document-->

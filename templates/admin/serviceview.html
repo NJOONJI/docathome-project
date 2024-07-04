@@ -1,0 +1,94 @@
+{% load static %}
+{% include 'admin/header.html' %}
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="row">
+                    <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                        <h3 class="font-weight-bold">Welcome Alby</h3>
+                        <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span
+                                class="text-primary">3 unread alerts!</span></h6>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title"Service View</p>
+                         <div class="table-responsive custom-table-responsive">
+
+            <table class="table custom-table">
+                <thead>
+                <tr>
+                    <th scope="col">Sl No</th>
+                    <th scope="col">Service Name</th>
+                    <th scope="col">Service Time</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ser in ser %}
+                <tr scope="row">
+                    <td>{{forloop.counter}}</td>
+                    <td>{{ser.sername}}</td>
+                    <td>{{ser.serTime}}</td>
+                    <td><a href="{% url 'serviceedit' id=ser.serid %}">
+                        <button class="btn btn-primary">Edit</button>
+                    </a></td>
+                  <td><a href="{% url 'servicedelete' id=ser.serid %}">
+                        <button class="btn btn-danger">Delete</button>
+                    </a></td>
+
+
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+            </div>
+
+        </div>
+
+    </div>
+
+<!-- content-wrapper ends -->
+<!-- partial:partials/_footer.html -->
+{% include 'admin/footer.html' %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,82 @@
+{% load static %}
+{% include 'admin/header.html' %}
+    <script src="{% static 'admin/jquery.min.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRFToken": '{{ csrf_token }}'
+                }
+            });
+            $('#disid').change(function () {
+                var did = $(this).val();
+                $.ajax({
+                    type: "POST",
+                    url: '{% url "filllocation" %}',
+                    data: { did: did },
+                    dataType: "json",
+                    success: function (data) {
+                        $('#loid').empty(); // Clear table body
+                        $.each(data, function (index, val) {
+                            var row = '<tr>' +
+                                '<td>' + (index + 1) + '</td>' +
+                                '<td>' + val.locname + '</td>' +
+                                '<td><a href="../locationedit/' + val.locid + '"><button style="text-decoration:none" class="btn btn-warning">Edit</button></a></td>' +
+                                '<td><a href="../deletelocation/' + val.locid + '"><button style="text-decoration:none" class="btn btn-danger">Delete</button></a></td>' +
+                                '</tr>';
+                            $('#loid').append(row);
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="row">
+                    <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                        <h3 class="font-weight-bold">Welcome Alby</h3>
+                        <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span
+                                class="text-primary">3 unread alerts!</span></h6>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <tr><th> Search District <br><select name="disid" class="form-control" style="width:200px;" id="disid" required>
+              {% for d in dist %}
+              <option value="{{d.disid}}">{{d.disname}}</option>
+              {% endfor %}
+            </select></th>
+            </tr><br><br><br>
+                <h2 class="mb-5">Location View</h2>
+                <table class="table custom-table" required>
+                    <thead>
+                    <tr>
+                        <th scope="col">Sl No</th>
+                        <th scope="col">Location Name</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody id="loid">
+                    <!-- Data will be populated here -->
+                    </tbody>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+<!-- content-wrapper ends -->
+<!-- partial:partials/_footer.html -->

@@ -1,0 +1,54 @@
+{% load static %}
+{% include 'admin/header.html' %}
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="row">
+                    <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                        <h3 class="font-weight-bold">Welcome Alby</h3>
+                        <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span
+                                class="text-primary">3 unread alerts!</span></h6>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+        <div class="container">
+       <h2 class="mb-5">Service Registration</h2>
+                        <form class="form" method="post" action="{% url 'servicereg' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="sername">Service Name</label>
+        <input type="text" id="sername" name="sername" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="sertime">Service Time </label>
+        <input type="number" id="sertime" name="sertime" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="serphoto">Service Photo</label>
+        <input type="file" id="serphoto" name="serphoto" class="form-control-file" required>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+<!-- content-wrapper ends -->
+<!-- partial:partials/_footer.html -->
+{% include 'admin/footer.html' %}

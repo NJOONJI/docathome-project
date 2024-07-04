@@ -1,0 +1,116 @@
+{% load static %}
+
+{% include 'admin/header.html' %}
+
+<script src="{% static 'admin/jquery.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+<!--    alert("hai");-->
+$.ajaxSetup({
+    headers: {
+        "X-CSRFToken": '{{ csrf_token }}'
+    }
+});
+ $('#disid').change(function () {
+<!--alert("hello");-->
+var did = $(this).val();
+$.ajax({
+type: "POST",
+url: '{% url "filllocation" %}',
+data: { did: did },
+dataType: "json",
+success: function (data) {
+    $('#locid').empty();
+    var opt = $('<option />').val(0).text('--Select--');
+    $('#locid').append(opt);
+    $.each(data, function(key, val) {
+        var opt = $('<option />').val(val.locid).text(val.locname);
+        $('#locid').append(opt);
+
+            });
+        }
+    });
+});
+
+$('#locid').change(function () {
+    var did = $(this).val();
+    $.ajax({
+        type: "POST",
+        url: '{% url "filldoctor" %}',
+        data: { did: did },
+        dataType: "json",
+        success: function (data) {
+            $('#docid').empty(); // Clear table body
+            $.each(data, function (index, val) {
+                var row = '<tr>' +
+                    '<td>' + (index + 1) + '</td>' +
+                    '<td>' + val.docname + '</td>' +
+                    '<td>' + val.regdate + '</td>' +
+                    '<td>' + val.phone + '</td>' +
+                    '<td>' + val.qualification + '</td>' +
+                    '<td>' + val.experience + '</td>' +
+                    '<td>' + val.specialization + '</td>' +
+
+                                '<td><a href="../acceptdoctor/' + val.docid + '"><button style="text-decoration:none;" class="btn btn-warning">Confirm</button></a></td>' +
+                               '<td><a href="../rejectdoctor/' + val.docid + '"><button style="text-decoration:none;" class="btn btn-danger">Reject</button></a></td>' +
+
+
+    '</tr>';
+                $('#docid').append(row);
+            });
+        }
+    });
+});
+
+
+});
+</script>
+
+
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="mb-5">Doctor View</h2>
+                <tr>
+                    <th> Search District <br><select name="disid" class="form-control" style="width:200px;" id="disid" required>
+                        <option>Choose District</option>
+                        {% for d in dist %}
+                        <option value="{{d.disid}}">{{d.disname}}</option>
+                        {% endfor %}
+                    </select></th>
+                </tr>
+                <br><br><br>
+                <h2 class="mb-5">Location View</h2>
+                <tr>
+                    <th> Search Location <br><select name="locid" class="form-control" style="width:200px;" id="locid"  required>
+                        {% for d in dist %}
+                        <option value="{{d.locid}}">{{d.locname}}</option>
+                        {% endfor %}
+                    </select></th>
+                </tr>
+                <br><br><br>
+                <table class="table table-responsive">
+                    <thead>
+                    <tr>
+                        <th scope="col">Sl No</th>
+                        <th scope="col">Location Name</th>
+                        <th scope="col">Reg Date</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Qualification</th>
+                        <th scope="col">experience</th>
+                        <th scope="col">Specialization</th>
+                        <th scope="col">Confirm</th>
+                        <th scope="col">Reject</th>
+                    </tr>
+                    </thead>
+                    <tbody id="docid">
+                    <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% include 'admin/footer.html' %}

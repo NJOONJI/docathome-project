@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% include 'patient/header.html' %}
+<script src="{% static 'admin/jquery.min.js' %}"></script>
+
+<head>
+
+    <title>Hospital Registration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="{% static 'guest/images/icons/favicon.ico'%}"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/bootstrap/css/bootstrap.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/fonts/Linearicons-Free-v1.0.0/icon-font.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/animate/animate.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/css-hamburgers/hamburgers.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/animsition/css/animsition.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/select2/select2.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/daterangepicker/daterangepicker.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/css/util.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/css/main.css'%}">
+     <script src="{% static 'admin/jquery.min.js' %}"></script>
+   <script>
+		        $(document).ready(function () {
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRFToken": '{{ csrf_token }}'
+                }
+            });
+             $('#district').change(function () {
+
+        var did = $(this).val();
+        $.ajax({
+            type: "POST",
+            url: '{% url "filllocation" %}',
+            data: { did: did },
+            dataType: "json",
+            success: function (data) {
+                $('#location').empty();
+                var opt = $('<option />').val(0).text('--Select--');
+                $('#location').append(opt);
+                $.each(data, function(key, val) {
+                    var opt = $('<option />').val(val.locid).text(val.locname);
+                    $('#location').append(opt);
+
+                        });
+                    }
+                });
+            });
+            $('#location').change(function () {
+                var did = $(this).val();
+                $.ajax({
+                    type: "POST",
+                    url: '{% url "fillhospital" %}',
+                    data: { did: did },
+                    dataType: "json",
+                    success: function (data) {
+                        $('#hospital').empty(); // Clear table body
+                        $.each(data, function (index, val) {
+                            var row = '<div class="col-lg-5 col-sm-6 mt-sm-0 mt-4" ><div class="team-block-single">'+
+                        '<div class="team-grids">'+
+                            '<a href="../hosservice/' + val.hosid + '">'+
+                               ' <img src="/images/'+val.hosphoto+'" class="img-fluid" alt="" style="width:400px;height:200px;">'+
+
+                            '</a>'+
+                        '</div>'+
+                        '<div class="team-bottom-block p-4">'+
+                            '<h5 class="member mb-1 active"><a href="../hosservice/' + val.hosid + '">'+val.hosname+'</a></h5>'+
+                           ' <small></small>'+
+                       ' </div>'+
+                    '</div></div>';
+                            $('#hospital').append(row);
+                        });
+                    }
+                });
+            });
+        });
+	</script>
+    <!--===============================================================================================-->
+</head>
+<body>
+
+<div class="limiter">
+    <div class="container-login100">
+
+         <!-- team section -->
+    <section class="w3l-team py-5">
+        <div class="container py-md-5 py-4">
+            <h3 class="title-style text-center mb-5">Meet Our <span>Hospitals</span></h3>
+
+<div class="wrap-input100 validate-input m-b-18">
+						District
+						 <select name="disname" class="input--style-4" id="district" required>
+                                    <option disabled="disabled" selected="selected">---Choose District---</option>
+                                    {% for d in dist %}
+
+                                    <option value="{{d.disid}}" class="input--style-4" >{{d.disname}}</option>
+                                    {% endfor %}
+                                </select>
+					</div>
+					<div class="wrap-input100 validate-input m-b-18">
+						Location
+						 <select name="locname" class="input--style-4" id="location" required>
+									<option disabled="disabled" selected="selected">---Choose Location---</option>
+                                </select>
+					</div>
+ <div class="row text-center" id="hospital">
+
+
+
+
+
+
+            </div>
+        </div>
+    </section>
+    </div>
+</div>
+</body>
+
+
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/jquery/jquery-3.2.1.min.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/animsition/js/animsition.min.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/bootstrap/js/popper.js'%}"></script>
+<script src="{% static 'guest/vendor/bootstrap/js/bootstrap.min.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/select2/select2.min.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/daterangepicker/moment.min.js'%}"></script>
+<script src="{% static 'guest/vendor/daterangepicker/daterangepicker.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/countdowntime/countdowntime.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/js/main.js'%}"></script>
+
+</body>
+</html></title>
+</head>
+<body>
+
+</body>
+</html>

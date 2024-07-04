@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% include 'hospital/header.html' %}
+<script src="{% static 'admin/jquery.min.js' %}"></script>
+
+<head>
+    <script>
+		        $(document).ready(function () {
+		        alert("hai");
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRFToken": '{{ csrf_token }}'
+                }
+            });
+             $('#department').change(function () {
+
+        var did = $(this).val();
+        var adate=$('#adate').val()
+        $.ajax({
+            type: "POST",
+            url: '{% url "filldoctor" %}',
+            data: { did: did ,adate:adate},
+            dataType: "json",
+            success: function (data) {
+                $('#doctor').empty();
+                var opt = $('<option />').val(0).text('--Select--');
+                $('#doctor').append(opt);
+                $.each(data, function(key, val) {
+                    var opt = $('<option />').val(val.docid).text(val.docname);
+                    $('#doctor').append(opt);
+
+                        });
+                    }
+                });
+            });
+             $('#doctor').change(function () {
+
+        var did = $(this).val();
+        var adate=$('#adate').val()
+        $.ajax({
+            type: "POST",
+            url: '{% url "appointmentdetails" %}',
+            data: { did: did ,adate:adate},
+            dataType: "json",
+            success: function (data) {
+                $('#details').empty();
+
+                $.each(data, function(key, val) {
+                    var opt = "<tr><th>Assigned Appointment Time</th> <td>"+val.apptime+"</td></tr>";
+                    $('#details').append(opt);
+
+                        });
+                    }
+                });
+            });
+        });
+	</script>
+
+    <title>Hospital Registration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="{% static 'guest/images/icons/favicon.ico'%}"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/bootstrap/css/bootstrap.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/fonts/Linearicons-Free-v1.0.0/icon-font.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/animate/animate.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/css-hamburgers/hamburgers.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/animsition/css/animsition.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/select2/select2.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/daterangepicker/daterangepicker.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/css/util.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/css/main.css'%}">
+    <!--===============================================================================================-->
+</head>
+<body>
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <div class="login100-form-title" style="background-image: url({% static 'hospital/images/img1.jpg'%});">
+					<span class="login100-form-title-1">
+						Patient Details
+					</span>
+            </div>
+
+            <tbody>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Patient Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>House Name</th>
+                    <th>Pin</th>
+                    <th>Location Name</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+
+                <tr>
+                    <td>{{details.patid.patname}}</td>
+                    <td>{{details.patid.email}}</td>
+                    <td>{{details.patid.phone}}</td>
+                    <td>{{details.patid.gender}}</td>
+                    <td>{{details.patid.age}}</td>
+                    <td>{{details.patid.housename}}</td>
+                    <td>{{details.patid.pin}}</td>
+                    <td>{{details.patid.locid.locname}}</td>
+                    <th></th>
+
+                </tr>
+            </tbody>
+            </table><br><br>
+            <table class="table table-striped ">
+                <thead>
+                <tr>
+                    <th>Service Name</th>
+                    <th>Service Time</th>
+                    <th>Appointment Date</th>
+                    <th>Appointment Time</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+
+                <tr>
+                    <td>{{details.hosserid.serid.sername}}</td>
+                    <td>{{details.hosserid.serid.serTime}}</td>
+                    <td>{{details.appdate}}</td>
+                    <td>{{details.apptime}}</td>
+                    <th></th>
+
+                </tr>
+                </tbody>
+            </table><br><br>
+            {% if details.appdate > today_date %}
+<form action="{% url 'assigndoctor' id=details.appid %}" method="post">
+    {% csrf_token %}
+            <select name="depname" class="input--style-4" id="department" required>
+                <option disabled="disabled" selected="selected">---Department---</option>
+                {% for d in dept %}
+                <option value="{{d.depid.depid}}">{{d.depid.depname}}</option>
+                {% endfor %}
+
+                                </select>
+    <input type="hidden" id="adate" value="{{details.appdate}}">
+             <select name="docname" class="input--style-4" id="doctor" required>
+									<option disabled="disabled" selected="selected">---Doctor---</option>
+                                </select><br>
+    <table>
+        <tbody id="details"></tbody>
+    </table><br><br>
+            <button class="btn btn-primary" type="submit">Assign</button>
+
+</form><br>
+
+
+    <form action="{% url 'rejectrequest' id=details.appid %}" method="post" id="reason">
+        {% csrf_token %}
+        <label>Reason For Rejection</label>
+        <textarea class="form-control " style="width:250px;" name="reason" required></textarea>
+        <button type="submit" class="btn btn-primary">Reject</button>
+    </form>
+            {% else %}
+            <h5 style="color:red">Appointment Date Exceeds.Send A message</h5>
+            <textarea class="form-control" style="width:250px;" required></textarea><br>
+            <button type="submit" class="form-control"  style="width:250px;" required>Send Notification</button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</body>
+
+
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/jquery/jquery-3.2.1.min.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/animsition/js/animsition.min.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/bootstrap/js/popper.js'%}"></script>
+<script src="{% static 'guest/vendor/bootstrap/js/bootstrap.min.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/select2/select2.min.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/daterangepicker/moment.min.js'%}"></script>
+<script src="{% static 'guest/vendor/daterangepicker/daterangepicker.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/countdowntime/countdowntime.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/js/main.js'%}"></script>
+
+</body>
+</html>

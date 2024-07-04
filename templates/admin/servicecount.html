@@ -1,0 +1,49 @@
+{% load static %}
+{% include 'admin/header.html' %}
+<script src="{% static 'admin/jquery.min.js' %}"></script>
+
+
+<div id="container" style="width: 75%;">
+    <div class="row">
+        <div class="col-12 mt-5 mb-5">
+            <center>
+            <h2>service booked by patient</h2>
+
+            </center>
+        </div>
+        <div class="col-12">
+            <canvas id="pie-chart"></canvas>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script>
+
+    var config = {
+      type: 'pie',
+      data: {
+        datasets: [{
+          data: {{ data|safe }},
+          backgroundColor: [
+            '#b3d569', '#ff9a44', '#6e69d5', '#db7edf','#69bcd5'
+          ],
+          label: 'Population'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    window.onload = function() {
+      var ctx = document.getElementById('pie-chart').getContext('2d');
+      window.myPie = new Chart(ctx, config);
+    };
+
+</script>
+</div>
+
+{% include 'admin/footer.html' %}

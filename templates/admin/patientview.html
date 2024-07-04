@@ -1,0 +1,116 @@
+
+{% load static %}
+
+{% include 'admin/header.html' %}
+
+    <script src="{% static 'admin/jquery.min.js' %}"></script>
+   <script>
+		        $(document).ready(function () {
+		        alert("hai");
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRFToken": '{{ csrf_token }}'
+                }
+            });
+             $('#disid').change(function () {
+            alert("hello");
+        var did = $(this).val();
+        $.ajax({
+            type: "POST",
+            url: '{% url "filllocation" %}',
+            data: { did: did },
+            dataType: "json",
+            success: function (data) {
+                $('#locid').empty();
+                var opt = $('<option />').val(0).text('--Select--');
+                $('#locid').append(opt);
+                $.each(data, function(key, val) {
+                    var opt = $('<option />').val(val.locid).text(val.locname);
+                    $('#locid').append(opt);
+
+                        });
+                    }
+                });
+            });
+
+            $('#locid').change(function () {
+                var did = $(this).val();
+                $.ajax({
+                    type: "POST",
+                    url: '{% url "fillpatient" %}',
+                    data: { did: did },
+                    dataType: "json",
+                    success: function (data) {
+                        $('#patid').empty(); // Clear table body
+                        $.each(data, function (index, val) {
+                            var row = '<tr>' +
+                                '<td>' + (index + 1) + '</td>' +
+                                '<td>' + val.patname + '</td>' +
+                                '<td>' + val.regdate + '</td>' +
+                                '<td>' + val.phone + '</td>' +
+                                '<td>' + val.gender + '</td>' +
+                                '<td>' + val.age + '</td>' +
+                                '<td>' + val.housename + '</td>' +
+                                '<td>' + val.pin + '</td>' +
+                                '<td>' + val.opno + '</td>' +
+                                '<td><a href="../acceptpatient/' + val.patid + '"><button style="text-decoration:none;" class="btn btn-warning">Accept</button></a></td>' +
+                               '<td><a href="../rejectpatient/' + val.patid + '"><button style="text-decoration:none;" class="btn btn-danger">Reject</button></a></td>' +
+
+
+                '</tr>';
+                            $('#patid').append(row);
+                        });
+                    }
+                });
+            });
+
+
+        });
+	</script>
+
+
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="mb-5">Patient View</h2>
+                   <tr><th> Search District <br><select name="disid" class="form-control" style="width:200px;" id="disid" required>
+                       <option>Choose District</option>
+              {% for d in dist %}
+              <option value="{{d.disid}}">{{d.disname}}</option>
+              {% endfor %}
+            </select></th>
+            </tr><br><br><br>
+                <h2 class="mb-5">Location View</h2>
+                <tr><th> Search Location <br><select name="locid" class="form-control" style="width:200px;" id="locid" required>
+              {% for d in dist %}
+              <option value="{{d.locid}}">{{d.locname}}</option>
+              {% endfor %}
+            </select></th>
+            </tr><br><br><br>
+                <table class="table table-responsive">
+                    <thead>
+                    <tr>
+                        <th scope="col">Sl No</th>
+                        <th scope="col">Location Name</th>
+                         <th scope="col">Reg Date</th>
+                         <th scope="col">Phone</th>
+                         <th scope="col">Gender</th>
+                         <th scope="col">Age</th>
+                        <th scope="col">House Name</th>
+                         <th scope="col">Pin</th>
+                         <th scope="col">Op No</th>
+                        <th scope="col">Accept</th>
+                        <th scope="col">Reject</th>
+                    </tr>
+                    </thead>
+                    <tbody id="patid">
+                    <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% include 'admin/footer.html' %}

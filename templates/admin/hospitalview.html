@@ -1,0 +1,104 @@
+
+{% load static %}
+
+{% include 'admin/header.html' %}
+
+    <script src="{% static 'admin/jquery.min.js' %}"></script>
+   <script>
+		        $(document).ready(function () {
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRFToken": '{{ csrf_token }}'
+                }
+            });
+             $('#disid').change(function () {
+
+        var did = $(this).val();
+        $.ajax({
+            type: "POST",
+            url: '{% url "filllocation" %}',
+            data: { did: did },
+            dataType: "json",
+            success: function (data) {
+                $('#locid').empty();
+                var opt = $('<option />').val(0).text('--Select--');
+                $('#locid').append(opt);
+                $.each(data, function(key, val) {
+                    var opt = $('<option />').val(val.locid).text(val.locname);
+                    $('#locid').append(opt);
+
+                        });
+                    }
+                });
+            });
+
+            $('#locid').change(function () {
+                var did = $(this).val();
+                $.ajax({
+                    type: "POST",
+                    url: '{% url "fillhospital1" %}',
+                    data: { did: did },
+                    dataType: "json",
+                    success: function (data) {
+                        $('#hosid').empty(); // Clear table body
+                        $.each(data, function (index, val) {
+                            var row = '<tr>' +
+                                '<td>' + (index + 1) + '</td>' +
+                                '<td>' + val.hosname + '</td>' +
+                                '<td>' + val.regdate + '</td>' +
+                                '<td><img src="/images/' + val.licencephoto + '" style="height:100px;width:100px;"></td>' +
+                                '<td>' + val.phone + '</td>' +
+                                '<td><img src="/images/' + val.hosphoto + '" style="height:100px;width:100px;"></td>' +
+                                '<td><a href="../accepthospital/' + val.hosid + '"><button style="text-decoration:none;" class="btn btn-warning">Accept</button></a></td>' +
+                                   '<td><a href="../rejecthospital/' + val.hosid + '"><button style="text-decoration:none;" class="btn btn-danger">Reject</button></a></td>' +
+                                  '</tr>';
+                            $('#hosid').append(row);
+                        });
+                    }
+                });
+            });
+        });
+	</script>
+
+
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="mb-5">Hospital View</h2>
+                   <tr><th> Search District <br><select name="disid" class="form-control" style="width:200px;" id="disid" required>
+                       <option>Choose District</option>
+              {% for d in dist %}
+              <option value="{{d.disid}}">{{d.disname}}</option>
+              {% endfor %}
+            </select></th>
+            </tr><br><br><br>
+                <h2 class="mb-5">Location View</h2>
+                <tr><th> Search Location <br><select name="locid" class="form-control" style="width:200px;" id="locid" required>
+              {% for d in dist %}
+              <option value="{{d.locid}}">{{d.locname}}</option>
+              {% endfor %}
+            </select></th>
+            </tr><br><br><br>
+                <table class="table custom-table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Sl No</th>
+                        <th scope="col">Location Name</th>
+                         <th scope="col">Reg Date</th>
+                         <th scope="col">Licence Photo</th>
+                         <th scope="col">Phone</th>
+                         <th scope="col">Hospital Photo</th>
+                        <th scope="col">Accept</th>
+                        <th scope="col">Reject</th>
+                    </tr>
+                    </thead>
+                    <tbody id="hosid">
+                    <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% include 'patient/header.html' %}
+<script src="{% static 'admin/jquery.min.js' %}"></script>
+<script>
+    $(document).ready(function()
+    {
+ alert("haii");
+ $.ajaxSetup({
+       headers : {"X-CSRFToken" : '{{csrf_token}}'}
+       });
+       $("#district").change(function()
+       {
+
+       var c=$(this).val();
+       alert(c);
+       var i=1;
+       $.ajax({
+             type:"POST",
+             url : '{% url "filllocation" %}',
+             data : {did :c},
+             dataType:"json",
+             success : function(data)
+             {
+             $('#location').empty();
+                     // Populate table with new data
+                     $.each(data,function(key,val) {
+                     var row = "<option value='"+val.locid+"'>" + val.locname + "</option>";
+                      $('#location').append(row);
+
+
+                     });
+                  }
+                  });
+       });
+    });
+</script>
+<style>.container-login100-form-btn {
+    text-align: center; /* Centers the button horizontally */
+}
+</style>
+<title>Hospital Registration</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" href="{% static 'guest/images/icons/favicon.ico'%}"/>
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/bootstrap/css/bootstrap.min.css'%}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'guest/fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'guest/fonts/Linearicons-Free-v1.0.0/icon-font.min.css'%}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/animate/animate.css'%}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/css-hamburgers/hamburgers.min.css'%}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/animsition/css/animsition.min.css'%}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/select2/select2.min.css'%}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/daterangepicker/daterangepicker.css'%}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'guest/css/util.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'guest/css/main.css'%}">
+<!--===============================================================================================-->
+</head>
+<body>
+<br><br>
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <div class="login100-form-title" style="background-image: url({% static 'patient/images/img1.jpg'%});">
+					<span class="login100-form-title-1">
+						Edit Profile
+					</span>
+            </div>
+            <center>
+                <form action="{% url 'editprofile' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <table>
+                        <tr>
+                            <th> Name</th>
+                            <td><input type="text" name="patname" class="form-control" value="{{patient.patname}}"><br>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Email</th>
+                            <td><input type="text" name="email" class="form-control" value="{{patient.email}}"><br></td>
+                        </tr>
+                        <br>
+                        <tr>
+                            <th>Phone</th>
+                            <td><input type="text" name="phone" class="form-control" value="{{patient.phone}}"><br></td>
+                        </tr>
+                        <tr>
+                            <th>Gender</th>
+                            <td><input type="text" name="gender" class="form-control" value="{{patient.gender}}"><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Age</th>
+                            <td><input type="text" name="age" class="form-control" value="{{patient.age}}"><br></td>
+                        </tr>
+                        <tr>
+                            <th>Pin</th>
+                            <td><input type="text" name="pin" class="form-control" value="{{patient.pin}}"><br></td>
+                        </tr>
+                        <tr>
+                            <th>Op No</th>
+                            <td><input type="text" name="opno" class="form-control" value="{{patient.opno}}"><br></td>
+                        </tr>
+
+                        <br>
+                        <tr>
+                            <th>District</th>
+                            <td><select name="disid" class="form-control" id="district">
+
+                                {% for d in district %}
+                                {% if d.disid == patient.locid.disid.disid %}
+                                <option value="{{d.disid}}" selected>{{d.disname}}</option>
+                                {% else %}
+                                <option value="{{d.disid}}">{{d.disname}}</option>
+                                {% endif %}
+                                {% endfor %}
+
+                            </select><br></td>
+                        </tr>
+                        <tr>
+                            <th>Location</th>
+                            <td><select name="locid" class="form-control" id="location">
+
+                                {% for d in location %}
+                                {% if d.locid == patient.locid%}
+                                <option value="{{d.locid}}" selected>{{d.locname}}</option>
+                                {% else %}
+                                <option value="{{d.locid}}">{{d.locname}}</option>
+                                {% endif %}
+                                {% endfor %}
+
+                            </select></td>
+                        </tr>
+                    </table>
+                    <br><br>
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn" type="submit" >
+                            Submit
+                        </button>
+                    </div>
+
+                    <!--===============================================================================================-->
+                    <script src="{% static 'guest/vendor/jquery/jquery-3.2.1.min.js'%}"></style>
+                    <!--===============================================================================================-->
+                    <script src="{% static 'guest/vendor/animsition/js/animsition.min.js'%}">
+                    </script>
+                    <!--===============================================================================================-->
+                    <script src="{% static 'guest/vendor/bootstrap/js/popper.js'%}"></script>
+                    <script src="{% static 'guest/vendor/bootstrap/js/bootstrap.min.js'%}"></script>
+                    <!--===============================================================================================-->
+                    <script src="{% static 'guest/vendor/select2/select2.min.js'%}"></script>
+                    <!--===============================================================================================-->
+                    <script src="{% static 'guest/vendor/daterangepicker/moment.min.js'%}"></script>
+                    <script src="{% static 'guest/vendor/daterangepicker/daterangepicker.js'%}"></script>
+                    <!--===============================================================================================-->
+                    <script src="{% static 'guest/vendor/countdowntime/countdowntime.js'%}"></script>
+                    <!--===============================================================================================-->
+                    <script src="{% static 'guest/js/main.js'%}"></script>
+                </form>
+            </center>
+</body>
+</html>

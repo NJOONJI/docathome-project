@@ -1,0 +1,105 @@
+
+{% load static %}
+{% include 'patient/header.html' %}
+<script src="{% static 'admin/jquery.min.js' %}"></script>
+
+
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="{% static 'guest/images/icons/favicon.ico'%}"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/bootstrap/css/bootstrap.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/fonts/Linearicons-Free-v1.0.0/icon-font.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/animate/animate.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/css-hamburgers/hamburgers.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/animsition/css/animsition.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/select2/select2.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/daterangepicker/daterangepicker.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/css/util.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/css/main.css'%}">
+
+
+    <!--===============================================================================================-->
+
+<div class="limiter">
+    <div class="container-login100">
+
+         <!-- team section -->
+    <section class="w3l-team py-5">
+        <div class="container py-md-5 py-4">
+            <h3 class="title-style text-center mb-5">Meet Our <span>Services</span></h3>
+            <div class="row text-center">
+                <div class="col-12">
+        <form action="{% url 'servicerequest' hosid %}" method="post">
+            {% csrf_token %}
+                <table class="table table-striped">
+                    <tr>
+                        <th></th>
+                    <th>Service Image</th>
+                    <th>Service Name</th>
+                    <th>Service Time</th></tr>
+                    {% if services %}
+                    {% for s in services %}
+                    <tr>
+                        <td><input type="radio" name="hosserid" value="{{s.hosserid}}"></td>
+                        <td><img src="/images/{{s.serid.serphoto}}" style="width:130px;height:130px;"></td>
+                        <td>{{s.serid.sername}}</td>
+                        <td>{{s.serid.serTime}}</td>
+
+                    </tr>
+                     {% endfor %}
+                </table>
+               Required Date <input type="date"  class="btn btn--radius-2 btn--blue" name="requireddate" id="appointmentDate" required>
+            Required Time <input type="time"  class="btn btn--radius-2 btn--blue" name="requiredtime" required>
+                <button class="btn btn-danger" type="submit">Send Request</button>
+</form>
+                    {% else %}
+                    <p>No services found</p>
+                    {% endif %}
+                    </div>
+            </div>
+        </div>
+    </section>
+    </div>
+</div>
+
+ <script>
+        // Get today's date
+        var today = new Date();
+
+        // Format today's date as YYYY-MM-DD
+        var year = today.getFullYear();
+        var month = String(today.getMonth() + 1).padStart(2, '0');
+        var day = String(today.getDate()+1).padStart(2, '0');
+        var formattedDate = year + '-' + month + '-' + day;
+
+        // Set the min attribute of the date input field
+        document.getElementById("appointmentDate").setAttribute("min", formattedDate);
+    </script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/jquery/jquery-3.2.1.min.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/animsition/js/animsition.min.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/bootstrap/js/popper.js'%}"></script>
+<script src="{% static 'guest/vendor/bootstrap/js/bootstrap.min.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/select2/select2.min.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/daterangepicker/moment.min.js'%}"></script>
+<script src="{% static 'guest/vendor/daterangepicker/daterangepicker.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/vendor/countdowntime/countdowntime.js'%}"></script>
+<!--===============================================================================================-->
+<script src="{% static 'guest/js/main.js'%}"></script>
+
+</body>
+</html>

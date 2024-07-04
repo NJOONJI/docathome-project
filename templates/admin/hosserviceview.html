@@ -1,0 +1,72 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+{% include 'admin/header.html' %}
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'admin/district/view/fonts/icomoon/style.css' %}">
+
+    <link rel="stylesheet" href="{% static 'admin/district/view/css/owl.carousel.min.css' %}">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'admin/district/view/css/bootstrap.min.css' %}">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="{% static 'admin/district/view/css/style.css' %}">
+
+    <title>Table #5</title>
+</head>
+<body>
+
+
+<div class="content">
+
+    <div class="container">
+        <h2 class="mb-5">Hospital Service View</h2>
+
+
+        <div class="table-responsive custom-table-responsive">
+
+            <table class="table custom-table">
+                <thead>
+                <tr>
+                    <th scope="col">Sl No</th>
+                    <th scope="col">Service Name</th>
+                    <th scope="col">Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ser in ser %}
+                <tr scope="row">
+                    <td>{{forloop.counter}}</td>
+                    <td>{{ser.sername}}</td>
+
+                <td><a href="{% url 'hosservicedelete' id=ser.serid %}">
+                       <button class="btn btn-danger">Delete</button>
+                   </a></td>
+
+
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+
+</div>
+</div>
+</div>
+<script src="{% static 'admin/district/view/js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'admin/district/view/js/popper.min.js' %}"></script>
+<script src="{% static 'admin/district/view/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'admin/district/view/js/main.js' %}"></script>
+</body>
+</html>
+{% include 'admin/footer.html' %}

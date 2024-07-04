@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% include 'hospital/header.html' %}
+<script src="{% static 'admin/jquery.min.js' %}"></script>
+
+<head>
+	<script>
+		        $(document).ready(function () {
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRFToken": '{{ csrf_token }}'
+                }
+            });
+             $('#district').change(function () {
+
+        var did = $(this).val();
+        $.ajax({
+            type: "POST",
+            url: '{% url "filllocation" %}',
+            data: { did: did },
+            dataType: "json",
+            success: function (data) {
+                $('#location').empty();
+                var opt = $('<option />').val(0).text('--Select--');
+                $('#location').append(opt);
+                $.each(data, function(key, val) {
+                    var opt = $('<option />').val(val.locid).text(val.locname);
+                    $('#location').append(opt);
+
+                        });
+                    }
+                });
+            });
+        });
+	</script>
+	<title>Hospital Registration</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="{% static 'guest/images/icons/favicon.ico'%}"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/bootstrap/css/bootstrap.min.css'%}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/fonts/Linearicons-Free-v1.0.0/icon-font.min.css'%}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/animate/animate.css'%}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/css-hamburgers/hamburgers.min.css'%}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/animsition/css/animsition.min.css'%}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/select2/select2.min.css'%}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/daterangepicker/daterangepicker.css'%}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/css/util.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'guest/css/main.css'%}">
+<!--===============================================================================================-->
+</head>
+<body>
+
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<div class="login100-form-title" style="background-image: url({% static 'hospital/images/img1.jpg'%});">
+					<span class="login100-form-title-1">
+						Doctor Registration
+					</span>
+				</div>
+
+				<form class="login100-form validate-form" method="post" action="{% url 'doctorreg' %}" enctype="multipart/form-data">
+					{% csrf_token %}
+
+					<div class="wrap-input100 validate-input m-b-26" >
+						<span class="label-input100">Doctor Name</span>
+						<input class="input--style-4" type="text" name="docname" required >
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-18">
+						<span class="label-input100">District</span>
+						 <select name="disname" class="input--style-4" id="district" required>
+                                    <option disabled="disabled" selected="selected">---Choose District---</option>
+                                    {% for d in dis %}
+
+                                    <option value="{{d.disid}}" class="input--style-4" >{{d.disname}}</option>
+                                    {% endfor %}
+                                </select>
+					</div>
+					<div class="wrap-input100 validate-input m-b-18">
+						<span class="label-input100">Location</span>
+						 <select name="locname" class="input--style-4" id="location" required>
+									<option disabled="disabled" selected="selected">---Choose Location---</option>
+                                </select>
+					</div>
+					<div class="wrap-input100 validate-input m-b-18">
+						<span class="label-input100">Department</span>
+						 <select name="depname" class="input--style-4" id="department" required>
+									<option disabled="disabled" selected="selected">---Choose department---</option>
+							 {% for d in department %}
+									<option value="{{d.depid}}">{{d.depname}}</option>
+							 {% endfor %}
+
+                                </select>
+					</div>
+
+					<div class="wrap-input100  m-b-18">
+						<span class="label-input100">Phone</span>
+						<input class="input100" type="text" name="phone" placeholder="Enter number" pattern="[0-9]{10}" required
+ title="Must contain 10 digits">
+						<span class="focus-input100"></span>
+					</div>
+					<div class="wrap-input100  m-b-18">
+						<span class="label-input100">Qualification</span>
+						<input class="input100" type="text" name="qualificationn" placeholder="Enter qualification" required>
+						<span class="focus-input100"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-26" >
+						<span class="label-input100">Experience</span>
+						<input class="input--style-4" type="text" name="experience" required>
+						<span class="focus-input100"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-26" >
+						<span class="label-input100">Specialization</span>
+						<input class="input--style-4" type="text" name="specialization" required>
+						<span class="focus-input100"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-26" >
+						<span class="label-input100">Online Time</span>
+						<input class="input--style-4" type="time" name="OnlineTime" required>
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="p-t-15">
+							<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
+						<span class="label-input100">Email</span>
+						<input class="input100" type="email" name="email" placeholder="Enter Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+title="must enter a valid email address" required >
+						<span class="focus-input100"></span>
+					</div>
+                        <div class="p-t-15">
+							<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
+						<span class="label-input100">Password</span>
+						<input class="input100" type="password" name="password" placeholder="Enter password"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required >
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn">
+							Register
+						</button>
+					</div>
+						</div>
+				  </form>
+			</div>
+		</div>
+	</div>
+
+<!--===============================================================================================-->
+	<script src="{% static 'guest/vendor/jquery/jquery-3.2.1.min.js'%}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'guest/vendor/animsition/js/animsition.min.js'%}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'guest/vendor/bootstrap/js/popper.js'%}"></script>
+	<script src="{% static 'guest/vendor/bootstrap/js/bootstrap.min.js'%}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'guest/vendor/select2/select2.min.js'%}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'guest/vendor/daterangepicker/moment.min.js'%}"></script>
+	<script src="{% static 'guest/vendor/daterangepicker/daterangepicker.js'%}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'guest/vendor/countdowntime/countdowntime.js'%}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'guest/js/main.js'%}"></script>
+
+</body>
+</html>

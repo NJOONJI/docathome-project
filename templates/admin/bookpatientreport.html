@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% include 'admin/header.html' %}
+<script src="{% static 'admin/jquery.min.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": '{{ csrf_token }}'
+            }
+        });
+        $('#district').change(function () {
+
+            var did = $(this).val();
+            <!--    alert(did)-->
+
+            $.ajax({
+                type: "POST",
+                url: '{% url "filllocation" %}',
+                data: { did: did },
+                dataType: "json",
+                success: function (data) {
+                    $('#location').empty();
+                    var opt = $('<option />').val(0).text('--Select--');
+                    $('#location').append(opt);
+                    $.each(data, function (key, val) {
+                        var opt = $('<option />').val(val.locid).text(val.locname);
+                        $('#location').append(opt);
+
+                    });
+                }
+            });
+        });
+        $('#location').change(function () {
+
+            var loc = $(this).val();
+            alert(loc)
+
+            $.ajax({
+                type: "POST",
+                url: '{% url "fillhospitaladmin" %}',
+                data: { loc: loc },
+                dataType: "json",
+                success: function (data) {
+                    $('#hospital').empty();
+                    var opt = $('<option />').val(0).text('--Select--');
+                    $('#hospital').append(opt);
+                    $.each(data, function (key, val) {
+                        var opt = $('<option />').val(val.hosid).text(val.hosname);
+                        $('#hospital').append(opt);
+
+                    });
+                }
+            });
+        });
+        $('#hospital').change(function () {
+
+            var loc = $(this).val();
+            alert(loc)
+
+            $.ajax({
+                type: "POST",
+                url: '{% url "fillserviceadmin" %}',
+                data: { loc: loc },
+                dataType: "json",
+                success: function (data) {
+                    $('#service').empty();
+                    var opt = $('<option />').val(0).text('--Select--');
+                    $('#service').append(opt);
+                    $.each(data, function (key, val) {
+                        var opt = $('<option />').val(val.serid__serid).text(val.serid__sername);
+                        $('#service').append(opt);
+
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+<head>
+
+    <title>Hospital Registration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="{% static 'guest/images/icons/favicon.ico'%}" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/bootstrap/css/bootstrap.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/fonts/Linearicons-Free-v1.0.0/icon-font.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/animate/animate.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/css-hamburgers/hamburgers.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/animsition/css/animsition.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/select2/select2.min.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/vendor/daterangepicker/daterangepicker.css'%}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/css/util.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'guest/css/main.css'%}">
+    <!--===============================================================================================-->
+</head>
+
+<body>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-form-title" style="background-image: url({% static 'guest/images/img1.jpg'%});">
+                    <span class="login100-form-title-1">
+                        Patient Details
+                    </span>
+                </div>
+                <form action="{% url 'patientdetails' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="wrap-input100 validate-input m-b-18">
+                        <span class="label-input100">District</span>
+                        <select name="district" class="input--style-4 form-control" id="district" required>
+                            <option disabled selected>---Choosee District---</option>
+                            {% for d in district %}
+                            <option value="{{d.disid}}" class="input--style-4">{{d.disname}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="wrap-input100 validate-input m-b-18">
+                        <span class="label-input100">Location</span>
+                        <select name="location" class="input--style-4 form-control" id="location" required>
+                            <option disabled selected>---Choose Location---</option>
+
+                        </select>
+                    </div>
+                    <div class="wrap-input100 validate-input m-b-18">
+                        <span class="label-input100">Hospital</span>
+                        <select name="hosname" class="input--style-4 form-control" id="hospital" required>
+                            <option disabled selected>---Choose Hospital---</option>
+
+                        </select>
+                    </div>
+                    <div class="wrap-input100 validate-input m-b-18">
+                        <span class="label-input100">Service</span>
+                        <select name="sername" class="input&#45;&#45;style-4 form-control" id="service" required>
+                            <option disabled selected>-&#45;&#45;Choose Service-&#45;&#45;</option>
+
+                        </select>
+                    </div>
+
+                    <div class="wrap-input100 validate-input m-b-18">
+                        <span>From Date : </span>
+                        <input type="date" name="fdate" placeholder="From Date" required>&nbsp;&nbsp;
+                        <span>To Date : </span>
+                        <input type="date" name="tdate" placeholder="To Date" required>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn" type="submit">
+                            Download
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!--===============================================================================================-->
+    <script src="{% static 'guest/vendor/jquery/jquery-3.2.1.min.js'%}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'guest/vendor/animsition/js/animsition.min.js'%}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'guest/vendor/bootstrap/js/popper.js'%}"></script>
+    <script src="{% static 'guest/vendor/bootstrap/js/bootstrap.min.js'%}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'guest/vendor/select2/select2.min.js'%}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'guest/vendor/daterangepicker/moment.min.js'%}"></script>
+    <script src="{% static 'guest/vendor/daterangepicker/daterangepicker.js'%}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'guest/vendor/countdowntime/countdowntime.js'%}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static 'guest/js/main.js'%}"></script>
+
+</body>
+
+</html>
+{% include 'admin/footer.html' %}

@@ -1,0 +1,42 @@
+{% load static %}
+{% include 'admin/header.html' %}
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="row">
+                    <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                        <h3 class="font-weight-bold">Welcome Alby</h3>
+                        <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span
+                                class="text-primary">3 unread alerts!</span></h6>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+    <div class="container">
+        <h2 class="mb-5">District Registration</h2>
+
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'districtreg' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="disname">District Name:</label>
+                                <input type="text" name="disname" id="disname" class="form-control" required pattern="^[A-Za-z]+$">
+                            </div>
+
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                        </form> </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% include 'admin/footer.html' %}
